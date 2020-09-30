@@ -23,7 +23,7 @@ bot.use(AnketaStage.middleware())
 // commands
 bot.start(startCommand());
 
-bot.hears('Заполнить анкету',  (ctx)  =>  ctx.scene.enter('fio'));
+bot.hears('Заполнить анкету 📄',  (ctx)  =>  ctx.scene.enter('fio'));
 
 // Actions
 
@@ -63,6 +63,7 @@ app.post('/fb_user', async (req, res) => {
         bot.telegram.sendMessage(816382988, 
 `Фио: ${name}, 
 Tg UserName: @${username}, 
+UserId: ${chatId}
 Номер телефона: ${phone}, 
 
 Facebook:

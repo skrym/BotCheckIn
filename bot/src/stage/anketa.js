@@ -3,10 +3,11 @@ const Scene = require("telegraf/scenes/base");
 const Markup = require ("telegraf/markup");
 const Extra = require ("telegraf/extra");
 
+
 const redisClient = require("../redis")
 
 const FIO = new Scene('fio')
-FIO.enter((ctx) => ctx.reply('Введите Ваше Фамилия Имя Отчество', Extra.markup(Markup.removeKeyboard(true))))
+FIO.enter((ctx) => ctx.reply('👩Введите Ваше Фамилия Имя Отчество👦', Extra.markup(Markup.removeKeyboard(true))))
 FIO.on('text', (ctx) => {
     ctx.session.name = ctx.message.text
     ctx.session.user = ctx.message.chat.username
@@ -15,7 +16,7 @@ FIO.on('text', (ctx) => {
 })
 
 const Phone = new Scene('phone')
-Phone.enter((ctx) => ctx.reply('Поделитесь с нами Вашим номером телефона', PhoneButtons))
+Phone.enter((ctx) => ctx.reply('Поделитесь с нами Вашим номером телефона 📞', PhoneButtons))
 Phone.on('contact', (ctx) => {
     ctx.session.tel = ctx.message.contact.phone_number
 
@@ -33,7 +34,7 @@ Face.enter(async (ctx) => {
     }), (r) => {
         setTimeout(() => redisClient.del(`${ctx.session.id}`), 1000 * 60 * 120)
     })
-    const msgId = await ctx.telegram.sendMessage(816382988, `Фио: ${ctx.session.name}, UserName: @${ctx.session.user}, номер телефона: ${ctx.session.tel}, Instagram:`, AdminButtons(ctx.session.id))
+    const msgId = await ctx.telegram.sendMessage(process.env.ADMIN, `Фио: ${ctx.session.name}, UserName: @${ctx.session.user}, UserID: ${ctx.session.id}, номер телефона: ${ctx.session.tel}`, AdminButtons(ctx.session.id))
         .then(ctx2 => ctx2.message_id);
 })
 

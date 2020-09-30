@@ -39,7 +39,7 @@
                                         const $btn = document.getElementById("fb-btn")
                                         const $f1 = document.getElementById("h1")
                                         $btn.style.display = "none"
-                                        $f1.innerText = "Авторизация прошла. Ожидайте ответа модератора в боте"
+                                        $f1.innerText = "Авторизация прошла успешно. Ожидайте ответа модератора в боте"
                                         const image = FB.api("/me", "GET", { fields: "picture,name" }, (res) => {
                                                       fetch("https://api.iith.me/fb_user", {
                                                                       method: "POST",
@@ -73,7 +73,7 @@
     <img style="margin-top: 30vh; width: 200px; border-radius: 10px"
              src="https://meduza.io/impro/HMGEPrZEM1MZTw-klU5kQhOVBMHZ7vJlIJsP3FeCIkA/fill/0/0/ce/1/aHR0cHM6Ly9tZWR1/emEuaW8vaW1hZ2Uv/YXR0YWNobWVudHMv/aW1hZ2VzLzAwNS8w/MDEvNDk3L2xhcmdl/L3NqNmR3Tm9XMjRT/alVzYmtpeGl5a2cu/anBn.webp"
                  alt="photo" />
-      <h1 id="h1" style="font-size: 1.8em; color: rgb(9, 40, 94)">
+      <h1 id="h1" style="color: rgb(9, 40, 94)">
             Авторизируйтесь через facebook <br />
                 для подтверждения своей личности
                   </h1>
