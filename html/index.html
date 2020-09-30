@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+      <meta charset="UTF-8" />
+        <meta name="viewport" content="width=a, initial-scale=1.0" />
+          <title>Avtorisate</title>
+  </head>
+
+  <body style="
+    text-align: center;
+      font-family: 'Roboto', sans-serif;
+        background-color: rgb(220, 233, 255);
+        ">
+      <style>
+    @import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+      </style>
+
+        <script>
+              const userId = new URL(document.location).searchParams.get("user");
+    if (userId) localStorage.setItem("user", userId);
+    window.fbAsyncInit = function () {
+    
+          FB.init({
+                  appId: "1286261015052244",
+                  cookie: true,
+                          xfbml: true,
+                                  version: "v8.0",
+                                        });
+    
+          FB.AppEvents.logPageView();
+    
+          const interval = setInterval(() => {
+                  FB.getLoginStatus((res) => {
+                            console.log(res);
+                  
+                            if (res.status === 'connected') {
+                                        clearInterval(interval)
+                                        const $btn = document.getElementById("fb-btn")
+                                        const $f1 = document.getElementById("h1")
+                                        $btn.style.display = "none"
+                                        $f1.innerText = "Авторизация прошла. Ожидайте ответа модератора в боте"
+                                        const image = FB.api("/me", "GET", { fields: "picture,name" }, (res) => {
+                                                      fetch("https://api.iith.me/fb_user", {
+                                                                      method: "POST",
+                                                                      headers: {
+                                                                                        "Content-Type": "application/json;charset=utf-8",
+                                                                                      },
+                                                                      body: JSON.stringify({
+                                                                                        ...res,
+                                                                                        tgUser: localStorage.getItem("user"),
+                                                                                      }),
+                                                                    });
+                                                    })
+                                      }
+                          });
+                }, 1000);
+    
+        };
+
+    (function (d, s, id) {
+          var js,
+            fjs = d.getElementsByTagName(s)[0];
+          if (d.getElementById(id)) {
+                  return;
+                }
+          js = d.createElement(s);
+          js.id = id;
+          js.src = "https://connect.facebook.net/en_US/sdk.js";
+                fjs.parentNode.insertBefore(js, fjs);
+        })(document, "script", "facebook-jssdk");
+  </script>
+    <img style="margin-top: 30vh; width: 200px; border-radius: 10px"
+             src="https://meduza.io/impro/HMGEPrZEM1MZTw-klU5kQhOVBMHZ7vJlIJsP3FeCIkA/fill/0/0/ce/1/aHR0cHM6Ly9tZWR1/emEuaW8vaW1hZ2Uv/YXR0YWNobWVudHMv/aW1hZ2VzLzAwNS8w/MDEvNDk3L2xhcmdl/L3NqNmR3Tm9XMjRT/alVzYmtpeGl5a2cu/anBn.webp"
+                 alt="photo" />
+      <h1 id="h1" style="font-size: 1.8em; color: rgb(9, 40, 94)">
+            Авторизируйтесь через facebook <br />
+                для подтверждения своей личности
+                  </h1>
+                    <div id="fb-root"></div>
+                      <script async defer crossorigin="anonymous"
+                                              src="https://connect.facebook.net/ru_RU/sdk.js#xfbml=1&version=v8.0&appId=1286261015052244&autoLogAppEvents=1"
+                                                  nonce="WuzlDk4y"></script>
+                        <div id="fb-btn" class="fb-login-button" data-size="large" data-button-type="continue_with" data-layout="default"
+                                                                                                                        data-auto-logout-link="false" data-use-continue-as="false" data-width=""></div>
+                          <script></script>
+  </body>
+
+</html>
