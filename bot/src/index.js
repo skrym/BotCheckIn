@@ -24,6 +24,12 @@ bot.use(AnketaStage.middleware())
 bot.start(startCommand());
 
 bot.hears('Заполнить анкету 📄',  (ctx)  =>  ctx.scene.enter('fio'));
+bot.hears('Генерировать ссылку',  (ctx)=>{
+    ctx.reply('Нажмите на кнопку и перейди в телеграмм канал', OkButton).then(data => setTimeout(() =>  
+        ctx.telegram.editMessageText(data.chat.id, data.message_id, null, 'Спасибо за регистрацию', Extra.markup()), 10000))
+
+});
+
 
 // Actions
 
@@ -32,7 +38,8 @@ bot.action(/Confirm/, ({ telegram, chat, callbackQuery, inlineMessageId, match }
 
     // Ответ заявочнику
     const chatId = match.input.split('_')[1]
-    telegram.sendMessage(chatId, "Ваша заявка принята, скоро наш аминистратор добавит Вас в группу");
+    telegram.sendMessage(chatId, "Ваша заявка принята, нажмите на кнопку и сгенерируйте свою индивидуальную ссылку.\nP.S. Ссылка будет работать на протяжении 10 секунд", GetButton);
+
 
     // Редактирование сообщения админа
     const newText = `${message.text}\n\nЗаявка Принята`
@@ -60,7 +67,7 @@ app.post('/fb_user', async (req, res) => {
     console.log(req.body)
     redisClient.get(`${req.body.tgUser}`, (err, data) => {
         const {name, username, phone, chatId} = JSON.parse(data)
-        bot.telegram.sendMessage(816382988, 
+        bot.telegram.sendMessage(process.env.ADMIN, 
 `Фио: ${name}, 
 Tg UserName: @${username}, 
 UserId: ${chatId}
@@ -70,7 +77,7 @@ Facebook:
 Имя: ${req.body.name}
 id: ${req.body.id}`, 
         AdminButtons(chatId))
-        bot.telegram.sendPhoto(816382988, `https://graph.facebook.com/${req.body.id}/picture?type=large`)
+        bot.telegram.sendPhoto(process.env.ADMIN, `https://graph.facebook.com/${req.body.id}/picture?type=large`)
         res.send({status: 'OK'})
     })
 })
@@ -83,3 +90,19 @@ const AdminButtons = (id)  => ({
         ], resize_keyboard: true, 
     }
 })
+
+const GetButton = {
+    reply_markup:{
+        keyboard:[
+            [{text:'Генерировать ссылку'}],
+        ], resize_keyboard: true, one_time_keyboard: true
+    }
+}
+
+const OkButton = {
+    reply_markup:{
+        inline_keyboard:[
+            [{text:'Перейти в группу', url:`https://t.me/joinchat/AAAAAEvxj1IUX8JT6cDbUg`}],
+        ], resize_keyboard: true
+    }
+}
