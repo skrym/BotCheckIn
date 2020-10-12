@@ -48,7 +48,7 @@ const PhoneButtons = {
 const FaceButton = (id) => ({
     reply_markup:{
         inline_keyboard:[
-            [{text:'Авторизоваться', url:`https://iith.me?user=${id}`}],
+            [{text:'Авторизоваться', url:`${process.env.SITE_URL}?user=${id}`}],
         ], resize_keyboard: true
     }
 });
